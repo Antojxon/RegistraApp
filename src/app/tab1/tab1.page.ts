@@ -27,6 +27,8 @@ export class Tab1Page {
       if (usuarioEncontrado.password === this.password) {
         // Contraseña válida, redirigir a la página "Sesión"
         this.navCtrl.navigateForward('/sesion');
+        this.usuario = '';
+        this.password = '';
       } else {
         // Mostrar un mensaje de alerta si la contraseña es incorrecta
         this.mostrarAlerta('Error', 'Contraseña incorrecta');
@@ -57,6 +59,8 @@ export class Tab1Page {
 
       Registrar() {
         this.navCtrl.navigateForward('/registrar'); 
+        this.usuario = '';
+        this.password = '';
           }
 
       recuperar(){
