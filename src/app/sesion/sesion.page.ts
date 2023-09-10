@@ -28,7 +28,7 @@ export class SesionPage implements OnInit {
         const qrData = JSON.parse(result.code);
   
         const alert = await this.alertController.create({
-          header: 'Información del QR',
+          header: 'Asistencia registrada',
           message: JSON.stringify(qrData), 
           buttons: ['OK'],
         });
