@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
-import { BarcodeScanner} from 'capacitor-barcode-scanner'
+import { BarcodeScanner, ScanResult} from 'capacitor-barcode-scanner'
 
 
 @Component({
@@ -22,14 +22,27 @@ export class SesionPage implements OnInit {
 
   async anto(){
 
-    const result = await(await BarcodeScanner.scan()).code;
-    if (result) {
-      console.log('Qr',JSON.parse(result));
+    try {
+      const result = await BarcodeScanner.scan();
+      if (result && result.code !== null && typeof result.code === 'string') {
+        const qrData = JSON.parse(result.code);
+  
+        const alert = await this.alertController.create({
+          header: 'Información del QR',
+          message: JSON.stringify(qrData), 
+          buttons: ['OK'],
+        });
+  
+        await alert.present();
+      } else {
+        console.error('El escaneo no contiene contenido válido.');
+      }
+    } catch (error) {
+      console.error('Error al escanear el código QR:', error);
     }
-    
-
   }
 
+  
  
 
   async presentAlert(): Promise<void> {
