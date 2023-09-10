@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { BarcodeScanner} from 'capacitor-barcode-scanner'
 
 
@@ -12,7 +12,8 @@ export class SesionPage implements OnInit {
   isSupported = true;
  
 
-  constructor(private alertController: AlertController) { }
+  constructor(private alertController: AlertController,
+    private  navCtrl: NavController) { }
 
   ngOnInit() {
     
@@ -39,4 +40,8 @@ export class SesionPage implements OnInit {
     });
     await alert.present();
   }
+
+  CerrarSesion() {
+    this.navCtrl.navigateRoot(['/tabs/tab1']); 
+      }
 }
