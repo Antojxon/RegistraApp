@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
-import { BarcodeScanner, ScanResult} from 'capacitor-barcode-scanner'
+import { BarcodeScanner} from 'capacitor-barcode-scanner'
+import { ActivatedRoute } from "@angular/router";
 
 
 @Component({
@@ -9,11 +10,17 @@ import { BarcodeScanner, ScanResult} from 'capacitor-barcode-scanner'
   styleUrls: ['./sesion.page.scss'],
 })
 export class SesionPage implements OnInit {
+  usuario: string | null = null;
   isSupported = true;
  
 
   constructor(private alertController: AlertController,
-    private  navCtrl: NavController) { }
+    private  navCtrl: NavController,
+    private activatedrouter: ActivatedRoute) { 
+      this.activatedrouter.paramMap.subscribe((params) =>{
+        this.usuario = params.get('usuario');
+      });
+    }
 
   ngOnInit() {
     
@@ -21,24 +28,14 @@ export class SesionPage implements OnInit {
 
 
   async anto(){
-
-    try {
-      const result = await BarcodeScanner.scan();
-      if (result && result.code !== null && typeof result.code === 'string') {
-        const qrData = JSON.parse(result.code);
-  
-        const alert = await this.alertController.create({
-          header: 'Asistencia registrada',
-          message: JSON.stringify(qrData), 
-          buttons: ['OK'],
-        });
-  
-        await alert.present();
-      } else {
-        console.error('El escaneo no contiene contenido válido.');
-      }
-    } catch (error) {
-      console.error('Error al escanear el código QR:', error);
+    const resultadoScan = await(await BarcodeScanner.scan())
+      
+    if (resultadoScan.result) {
+      console.log("resulatdo escaner",resultadoScan.code);
+    }
+    else
+    {
+      alert("No es posible capturar la información.")
     }
   }
 
